@@ -1,0 +1,36 @@
+openapi: 3.0.3
+info:
+  title: Customer API
+  version: 1.0.0
+paths:
+  /api/customers:
+    get:
+      operationId: listCustomers
+      parameters:
+        - in: query
+          name: q
+          schema: { type: string }
+        - in: query
+          name: page
+          schema: { type: integer, minimum: 1, default: 1 }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerList"
+components:
+  schemas:
+    Customer:
+      type: object
+      required: [id, name, tier]
+      properties:
+        id: { type: string }
+        name: { type: string, minLength: 1 }
+        tier: { type: string, enum: [Gold, Silver, Bronze] }
+    CustomerList:
+      type: object
+      properties:
+        items: { type: array, items: { $ref: "#/components/schemas/Customer" } }
+        total: { type: integer }

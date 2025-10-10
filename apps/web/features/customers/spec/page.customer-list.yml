@@ -1,0 +1,29 @@
+page: CustomerList
+route: /customers
+layout:
+  title: Customers
+  actions:
+    - type: button
+      id: createCustomer
+      label: New Customer
+      intent: route:/customers/new
+data:
+  source: GET /api/customers
+  queryKey: ["customers","list"]
+  pagination: server
+  filters:
+    - id: q
+      type: text
+      label: Search
+view:
+  type: table
+  columns:
+    - id: name
+      header: Name
+    - id: tier
+      header: Tier
+requirements:
+  accessibility: "axe: no-violations (out-of-scope in min template)"
+  lighthouse:
+    performance: ">=85 (configure later)"
+    accessibility: ">=90 (configure later)"
