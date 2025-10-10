@@ -1,0 +1,21 @@
+{
+  "id": "approval_1760087212314_3czpnt684",
+  "title": "Product Steering Document",
+  "filePath": ".spec-workflow/steering/product.md",
+  "type": "document",
+  "status": "needs-revision",
+  "createdAt": "2025-10-10T09:06:52.314Z",
+  "category": "steering",
+  "categoryName": "steering",
+  "response": "Feedback Summary (1 comments):\n\nGeneral Comments:\n1. 產品目標是建立一個線上購買書籍的前端網頁\n\n",
+  "annotations": "{\n  \"decision\": \"needs-revision\",\n  \"comments\": [\n    {\n      \"type\": \"general\",\n      \"comment\": \"產品目標是建立一個線上購買書籍的前端網頁\",\n      \"timestamp\": \"2025-10-10T09:15:57.371Z\",\n      \"id\": \"comment_1760087757371_wtmtqw4lh\"\n    }\n  ],\n  \"summary\": \"Feedback Summary (1 comments):\\n\\nGeneral Comments:\\n1. 產品目標是建立一個線上購買書籍的前端網頁\\n\\n\",\n  \"timestamp\": \"2025-10-10T09:16:00.445Z\"\n}",
+  "respondedAt": "2025-10-10T09:16:00.636Z",
+  "comments": [
+    {
+      "type": "general",
+      "comment": "產品目標是建立一個線上購買書籍的前端網頁",
+      "timestamp": "2025-10-10T09:15:57.371Z",
+      "id": "comment_1760087757371_wtmtqw4lh"
+    }
+  ]
+}

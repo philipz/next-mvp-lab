@@ -1,0 +1,22 @@
+{
+  "filePath": ".spec-workflow/specs/online-bookstore/tasks.md",
+  "currentVersion": 2,
+  "snapshots": [
+    {
+      "version": 1,
+      "filename": "snapshot-001.json",
+      "timestamp": "2025-10-10T12:49:16.353Z",
+      "trigger": "initial",
+      "approvalId": "approval_1760100556330_ed65xa4md",
+      "approvalTitle": "Tasks Document for Online Bookstore"
+    },
+    {
+      "version": 2,
+      "filename": "snapshot-002.json",
+      "timestamp": "2025-10-10T12:50:05.904Z",
+      "trigger": "approved",
+      "approvalId": "approval_1760100556330_ed65xa4md",
+      "approvalTitle": "Tasks Document for Online Bookstore"
+    }
+  ]
+}

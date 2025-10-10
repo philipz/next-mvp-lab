@@ -6,3 +6,4 @@ coverage
 apps/web/.next
 dist
 .env*
+sample/

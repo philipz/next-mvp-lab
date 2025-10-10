@@ -1,0 +1,28 @@
+page: BookList
+route: /books
+layout:
+  title: Books
+  actions: []
+data:
+  source: GET /api/books
+  queryKey: ["books", "list"]
+  pagination: server
+  filters: []
+view:
+  type: grid
+  columns:
+    - id: code
+      header: Code
+    - id: name
+      header: Name
+    - id: author
+      header: Author
+    - id: price
+      header: Price
+    - id: imageUrl
+      header: Image
+requirements:
+  accessibility: "Semantic HTML, keyboard accessible Buy buttons, ARIA labels on book images"
+  lighthouse:
+    performance: ">=90"
+    accessibility: ">=100"

@@ -1,0 +1,22 @@
+{
+  "filePath": ".spec-workflow/specs/online-bookstore/requirements.md",
+  "currentVersion": 2,
+  "snapshots": [
+    {
+      "version": 1,
+      "filename": "snapshot-001.json",
+      "timestamp": "2025-10-10T12:36:37.261Z",
+      "trigger": "initial",
+      "approvalId": "approval_1760099797233_tcdrfa9gi",
+      "approvalTitle": "Requirements Document for Online Bookstore"
+    },
+    {
+      "version": 2,
+      "filename": "snapshot-002.json",
+      "timestamp": "2025-10-10T12:37:02.324Z",
+      "trigger": "approved",
+      "approvalId": "approval_1760099797233_tcdrfa9gi",
+      "approvalTitle": "Requirements Document for Online Bookstore"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "filePath": ".spec-workflow/steering/product.md",
+  "currentVersion": 4,
+  "snapshots": [
+    {
+      "version": 1,
+      "filename": "snapshot-001.json",
+      "timestamp": "2025-10-10T09:06:52.367Z",
+      "trigger": "initial",
+      "approvalId": "approval_1760087212314_3czpnt684",
+      "approvalTitle": "Product Steering Document"
+    },
+    {
+      "version": 2,
+      "filename": "snapshot-002.json",
+      "timestamp": "2025-10-10T09:16:00.634Z",
+      "trigger": "revision_requested",
+      "approvalId": "approval_1760087212314_3czpnt684",
+      "approvalTitle": "Product Steering Document"
+    },
+    {
+      "version": 3,
+      "filename": "snapshot-003.json",
+      "timestamp": "2025-10-10T09:49:03.380Z",
+      "trigger": "approved",
+      "approvalId": "approval_1760087908878_zegmgvek7",
+      "approvalTitle": "Product Steering Document (Revised - Online Bookstore)"
+    },
+    {
+      "version": 4,
+      "filename": "snapshot-004.json",
+      "timestamp": "2025-10-10T09:49:05.992Z",
+      "trigger": "approved",
+      "approvalId": "approval_1760087908878_zegmgvek7",
+      "approvalTitle": "Product Steering Document (Revised - Online Bookstore)"
+    }
+  ]
+}

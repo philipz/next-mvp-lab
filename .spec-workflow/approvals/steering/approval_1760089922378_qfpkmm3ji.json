@@ -1,0 +1,51 @@
+{
+  "id": "approval_1760089922378_qfpkmm3ji",
+  "title": "Tech Steering Document (Technology Stack)",
+  "filePath": ".spec-workflow/steering/tech.md",
+  "type": "document",
+  "status": "needs-revision",
+  "createdAt": "2025-10-10T09:52:02.378Z",
+  "category": "steering",
+  "categoryName": "steering",
+  "response": "Feedback Summary (3 comments):\n\nSpecific Text Comments:\n1. \"**Next.js 14.2.5**\": 改用 14.2.33\n2. \"TanStack Query 5.51.0\": 改成 5.90.2\n3. \"#### Styling\n- **Tailwind CSS 3.4.7**: Utility-fir...\": 每個套件都使用最新的穩定版本\n",
+  "annotations": "{\n  \"decision\": \"needs-revision\",\n  \"comments\": [\n    {\n      \"type\": \"selection\",\n      \"comment\": \"改用 14.2.33\",\n      \"timestamp\": \"2025-10-10T09:54:33.128Z\",\n      \"selectedText\": \"**Next.js 14.2.5**\",\n      \"highlightColor\": {\n        \"bg\": \"rgba(255, 235, 59, 0.3)\",\n        \"border\": \"#FFEB3B\",\n        \"name\": \"#ffeb3b\"\n      },\n      \"id\": \"comment_1760090073128_h89izowu1\"\n    },\n    {\n      \"type\": \"selection\",\n      \"comment\": \"改成 5.90.2\",\n      \"timestamp\": \"2025-10-10T09:56:00.534Z\",\n      \"selectedText\": \"TanStack Query 5.51.0\",\n      \"highlightColor\": {\n        \"bg\": \"rgba(255, 235, 59, 0.3)\",\n        \"border\": \"#FFEB3B\",\n        \"name\": \"#ffeb3b\"\n      },\n      \"id\": \"comment_1760090160534_lnv6lfkfa\"\n    },\n    {\n      \"type\": \"selection\",\n      \"comment\": \"每個套件都使用最新的穩定版本\",\n      \"timestamp\": \"2025-10-10T09:56:45.915Z\",\n      \"selectedText\": \"#### Styling\\n- **Tailwind CSS 3.4.7**: Utility-first CSS framework for rapid UI development\\n- **PostCSS 8.4.38**: CSS processing tool for Tailwind\\n- **Autoprefixer 10.4.19**: Automatically adds vendor prefixes to CSS\\n\\n#### API Integration & Code Generation\\n- **openapi-typescript 7.4.2**: Generates TypeScript types from OpenAPI 3.0 specifications\\n- **MSW (Mock Service Worker) 2.4.6**: API mocking library for development and testing\\n\\n#### Testing\\n- **Vitest 2.0.5**: Fast unit test framework compatible with Vite ecosystem\\n- **@testing-library/react 16.0.0**: Testing utilities for React components\\n- **@testing-library/jest-dom 6.5.0**: Custom matchers for DOM assertions\\n- **Playwright 1.48.2**: End-to-end testing framework for cross-browser testing\\n\\n#### Development Tools\\n- **ESLint 9.8.0**: JavaScript/TypeScript linter with Next.js config\\n- **ts-node 10.9.2**: TypeScript execution engine for Node.js (used in code generation scripts)\\n- **js-yaml 4.1.0**: YAML parser for UI specification files\",\n      \"highlightColor\": {\n        \"bg\": \"rgba(255, 235, 59, 0.3)\",\n        \"border\": \"#FFEB3B\",\n        \"name\": \"#ffeb3b\"\n      },\n      \"id\": \"comment_1760090205915_rl9di7bsr\"\n    }\n  ],\n  \"summary\": \"Feedback Summary (3 comments):\\n\\nSpecific Text Comments:\\n1. \\\"**Next.js 14.2.5**\\\": 改用 14.2.33\\n2. \\\"TanStack Query 5.51.0\\\": 改成 5.90.2\\n3. \\\"#### Styling\\n- **Tailwind CSS 3.4.7**: Utility-fir...\\\": 每個套件都使用最新的穩定版本\\n\",\n  \"timestamp\": \"2025-10-10T09:57:14.986Z\"\n}",
+  "respondedAt": "2025-10-10T09:57:15.166Z",
+  "comments": [
+    {
+      "type": "selection",
+      "comment": "改用 14.2.33",
+      "timestamp": "2025-10-10T09:54:33.128Z",
+      "selectedText": "**Next.js 14.2.5**",
+      "highlightColor": {
+        "bg": "rgba(255, 235, 59, 0.3)",
+        "border": "#FFEB3B",
+        "name": "#ffeb3b"
+      },
+      "id": "comment_1760090073128_h89izowu1"
+    },
+    {
+      "type": "selection",
+      "comment": "改成 5.90.2",
+      "timestamp": "2025-10-10T09:56:00.534Z",
+      "selectedText": "TanStack Query 5.51.0",
+      "highlightColor": {
+        "bg": "rgba(255, 235, 59, 0.3)",
+        "border": "#FFEB3B",
+        "name": "#ffeb3b"
+      },
+      "id": "comment_1760090160534_lnv6lfkfa"
+    },
+    {
+      "type": "selection",
+      "comment": "每個套件都使用最新的穩定版本",
+      "timestamp": "2025-10-10T09:56:45.915Z",
+      "selectedText": "#### Styling\n- **Tailwind CSS 3.4.7**: Utility-first CSS framework for rapid UI development\n- **PostCSS 8.4.38**: CSS processing tool for Tailwind\n- **Autoprefixer 10.4.19**: Automatically adds vendor prefixes to CSS\n\n#### API Integration & Code Generation\n- **openapi-typescript 7.4.2**: Generates TypeScript types from OpenAPI 3.0 specifications\n- **MSW (Mock Service Worker) 2.4.6**: API mocking library for development and testing\n\n#### Testing\n- **Vitest 2.0.5**: Fast unit test framework compatible with Vite ecosystem\n- **@testing-library/react 16.0.0**: Testing utilities for React components\n- **@testing-library/jest-dom 6.5.0**: Custom matchers for DOM assertions\n- **Playwright 1.48.2**: End-to-end testing framework for cross-browser testing\n\n#### Development Tools\n- **ESLint 9.8.0**: JavaScript/TypeScript linter with Next.js config\n- **ts-node 10.9.2**: TypeScript execution engine for Node.js (used in code generation scripts)\n- **js-yaml 4.1.0**: YAML parser for UI specification files",
+      "highlightColor": {
+        "bg": "rgba(255, 235, 59, 0.3)",
+        "border": "#FFEB3B",
+        "name": "#ffeb3b"
+      },
+      "id": "comment_1760090205915_rl9di7bsr"
+    }
+  ]
+}

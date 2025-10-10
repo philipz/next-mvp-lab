@@ -1,0 +1,22 @@
+{
+  "filePath": ".spec-workflow/specs/online-bookstore/design.md",
+  "currentVersion": 2,
+  "snapshots": [
+    {
+      "version": 1,
+      "filename": "snapshot-001.json",
+      "timestamp": "2025-10-10T12:40:36.174Z",
+      "trigger": "initial",
+      "approvalId": "approval_1760100036163_48ahhughu",
+      "approvalTitle": "Design Document for Online Bookstore"
+    },
+    {
+      "version": 2,
+      "filename": "snapshot-002.json",
+      "timestamp": "2025-10-10T12:44:01.397Z",
+      "trigger": "approved",
+      "approvalId": "approval_1760100036163_48ahhughu",
+      "approvalTitle": "Design Document for Online Bookstore"
+    }
+  ]
+}
