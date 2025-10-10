@@ -4,7 +4,7 @@ interface RequestOptions {
 }
 
 export const client = {
-  async GET(path: string, init?: RequestInit) {
+  async GET<T = unknown>(path: string, init?: RequestInit): Promise<{ data: T }> {
     const res = await fetch(path, { ...init });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return { data: await res.json() };

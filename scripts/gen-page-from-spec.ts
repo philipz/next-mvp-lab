@@ -42,4 +42,3 @@ const out = `apps/web/app${route}/page.tsx`;
 fs.mkdirSync(`apps/web/app${route}`, { recursive: true });
 fs.writeFileSync(out, code);
 console.log("Generated:", out);
-`;
