@@ -1,0 +1,23 @@
+page: OrderList
+route: /orders
+layout:
+  title: Your Orders
+  actions: []
+data:
+  source: GET /api/orders
+  queryKey: ["orders", "list"]
+view:
+  type: table
+  columns:
+    - id: orderNumber
+      header: Order Number
+      type: link
+      linkTo: /orders/{orderNumber}
+    - id: status
+      header: Status
+      type: badge
+requirements:
+  accessibility: "Screen reader support, keyboard navigation, ARIA labels"
+  lighthouse:
+    performance: ">=90"
+    accessibility: ">=100"

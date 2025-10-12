@@ -11,8 +11,44 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get paginated list of books */
-        get: operations["listBooks"];
+        /**
+         * Get paginated list of books
+         * @description Retrieve books from catalog with pagination support
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description Page number (1-indexed) */
+                    page?: number;
+                    /** @description Number of items per page */
+                    pageSize?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Books retrieved successfully */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["BookListResponse"];
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
         put?: never;
         post?: never;
         delete?: never;
@@ -28,11 +64,95 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get current shopping cart */
-        get: operations["getCart"];
+        /**
+         * Get current shopping cart
+         * @description Retrieve current cart contents
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Cart retrieved successfully */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Cart"];
+                    };
+                };
+                /** @description Cart not found (empty cart) */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
         put?: never;
-        /** Add book to cart */
-        post: operations["addToCart"];
+        /**
+         * Add book to cart
+         * @description Add a book to the shopping cart (replaces existing item in simplified model)
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["AddToCartRequest"];
+                };
+            };
+            responses: {
+                /** @description Book added to cart successfully */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Cart"];
+                    };
+                };
+                /** @description Invalid book code or request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
@@ -48,8 +168,61 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Update cart item quantity */
-        post: operations["updateCart"];
+        /**
+         * Update cart item quantity
+         * @description Update the quantity of an item in the cart
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["UpdateCartRequest"];
+                };
+            };
+            responses: {
+                /** @description Cart updated successfully */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Cart"];
+                    };
+                };
+                /** @description Invalid quantity or book code */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description Cart not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
@@ -63,11 +236,86 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get list of all orders */
-        get: operations["listOrders"];
+        /**
+         * List all orders
+         * @description Get list of all orders with basic information
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Orders retrieved successfully */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["OrderListResponse"];
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
         put?: never;
-        /** Create new order */
-        post: operations["createOrder"];
+        /**
+         * Create new order
+         * @description Place a new order with customer information and delivery address
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["OrderFormData"];
+                };
+            };
+            responses: {
+                /** @description Order created successfully */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Order"];
+                    };
+                };
+                /** @description Validation error or invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
@@ -81,8 +329,51 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get order details by order number */
-        get: operations["getOrder"];
+        /**
+         * Get order details
+         * @description Retrieve detailed information for a specific order
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Unique order identifier */
+                    orderNumber: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Order details retrieved successfully */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["OrderDetailResponse"];
+                    };
+                };
+                /** @description Order not found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
         put?: never;
         post?: never;
         delete?: never;
@@ -103,57 +394,40 @@ export interface components {
             code: string;
             /**
              * @description Full book title
-             * @example A Game of Thrones
+             * @example The Great Gatsby
              */
             name: string;
             /**
              * @description Author name
-             * @example George R.R. Martin
+             * @example F. Scott Fitzgerald
              */
             author: string;
             /**
-             * Format: float
              * @description Price in USD
-             * @example 19.2
+             * @example 19.99
              */
             price: number;
             /**
              * Format: uri
              * @description URL to book cover image
-             * @example /images/books/game-of-thrones.jpg
+             * @example https://example.com/covers/great-gatsby.jpg
              */
             imageUrl: string;
         };
-        Pagination: {
-            /** @description Current page number (1-indexed) */
-            page: number;
-            /** @description Items per page */
-            pageSize: number;
-            /** @description Total number of pages */
-            totalPages: number;
-            /** @description Total number of items in catalog */
-            totalItems: number;
-        };
-        BookListResponse: {
-            /** @description Array of books for current page */
-            data: components["schemas"]["Book"][];
-            pagination: components["schemas"]["Pagination"];
-        };
         CartItem: {
             /**
-             * @description Book code
+             * @description Book code reference
              * @example book-001
              */
             code: string;
             /**
-             * @description Book name
-             * @example A Game of Thrones
+             * @description Book name (snapshot)
+             * @example The Great Gatsby
              */
             name: string;
             /**
-             * Format: float
-             * @description Unit price in USD
-             * @example 19.2
+             * @description Unit price (snapshot)
+             * @example 19.99
              */
             price: number;
             /**
@@ -163,37 +437,17 @@ export interface components {
             quantity: number;
         };
         Cart: {
-            /** @description Single cart item (null if cart is empty) */
-            item?: components["schemas"]["CartItem"] | null;
+            /** @description Single cart item (simplified model) */
+            item?: components["schemas"]["CartItem"] & unknown;
             /**
-             * Format: float
-             * @description Total amount (price × quantity)
-             * @example 38.4
+             * @description Calculated total amount
+             * @example 39.98
              */
             totalAmount: number;
         };
-        AddToCartRequest: {
-            /**
-             * @description Book code to add to cart
-             * @example book-001
-             */
-            code: string;
-        };
-        UpdateCartRequest: {
-            /**
-             * @description Book code
-             * @example book-001
-             */
-            code: string;
-            /**
-             * @description New quantity
-             * @example 3
-             */
-            quantity: number;
-        };
         Customer: {
             /**
-             * @description Customer name
+             * @description Customer full name
              * @example John Doe
              */
             name: string;
@@ -205,73 +459,128 @@ export interface components {
             email: string;
             /**
              * @description Customer phone number
-             * @example +1-555-0123
+             * @example +1-555-123-4567
              */
             phone: string;
-        };
-        OrderFormData: {
-            customer: components["schemas"]["Customer"];
-            /**
-             * @description Full delivery address
-             * @example 123 Main St, Apt 4B, New York, NY 10001
-             */
-            deliveryAddress: string;
         };
         Order: {
             /**
              * @description Unique order identifier
-             * @example ORD-20250110-001
+             * @example ORD-20251011-001
              */
             orderNumber: string;
             /**
-             * @description Order status
+             * @description Current order status
              * @example NEW
              * @enum {string}
              */
-            status: "NEW" | "CONFIRMED" | "SHIPPED" | "DELIVERED" | "CANCELLED";
+            status: "NEW" | "CONFIRMED" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED";
             customer: components["schemas"]["Customer"];
-            /** @description Delivery address */
+            /**
+             * @description Full delivery address
+             * @example 123 Main St, Anytown, ST 12345, USA
+             */
             deliveryAddress: string;
-            /** @description Ordered items */
+            /** @description Ordered items (snapshot) */
             items: components["schemas"]["CartItem"][];
             /**
-             * Format: float
-             * @description Total order amount in USD
+             * @description Total order amount
+             * @example 39.98
              */
             totalAmount: number;
             /**
              * Format: date-time
-             * @description Order creation timestamp (ISO 8601)
-             * @example 2025-01-10T14:30:00Z
+             * @description Order creation timestamp
+             * @example 2025-10-11T10:30:00Z
              */
             createdAt: string;
         };
-        OrderSummary: {
+        AddToCartRequest: {
             /**
-             * @description Order number
-             * @example ORD-20250110-001
+             * @description Book code to add to cart
+             * @example book-001
              */
-            orderNumber: string;
+            code: string;
+        };
+        UpdateCartRequest: {
             /**
-             * @description Order status
-             * @example NEW
-             * @enum {string}
+             * @description Book code to update
+             * @example book-001
              */
-            status: "NEW" | "CONFIRMED" | "SHIPPED" | "DELIVERED" | "CANCELLED";
+            code: string;
+            /**
+             * @description New quantity
+             * @example 3
+             */
+            quantity: number;
+        };
+        OrderFormData: {
+            customer: components["schemas"]["Customer"];
+            /**
+             * @description Complete delivery address
+             * @example 123 Main St, Anytown, ST 12345, USA
+             */
+            deliveryAddress: string;
+        };
+        BookListResponse: {
+            /** @description Array of books for current page */
+            data: components["schemas"]["Book"][];
+            pagination: {
+                /**
+                 * @description Current page number (1-indexed)
+                 * @example 1
+                 */
+                page: number;
+                /**
+                 * @description Items per page
+                 * @example 10
+                 */
+                pageSize: number;
+                /**
+                 * @description Total number of pages
+                 * @example 5
+                 */
+                totalPages: number;
+                /**
+                 * @description Total books in catalog
+                 * @example 42
+                 */
+                totalItems: number;
+            };
         };
         OrderListResponse: {
-            /** @description List of order summaries */
-            orders: components["schemas"]["OrderSummary"][];
+            orders: {
+                /** @example ORD-20251011-001 */
+                orderNumber: string;
+                /**
+                 * @example NEW
+                 * @enum {string}
+                 */
+                status: "NEW" | "CONFIRMED" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED";
+            }[];
         };
         OrderDetailResponse: {
             order: components["schemas"]["Order"];
         };
-        Error: {
+        ErrorResponse: {
             /**
-             * @description Error message
-             * @example Book not found
+             * @description Error type identifier
+             * @example VALIDATION_ERROR
              */
             error: string;
+            /**
+             * @description Human-readable error message
+             * @example Invalid email format
+             */
+            message: string;
+            /**
+             * @description Additional error details
+             * @example {
+             *       "field": "customer.email",
+             *       "code": "INVALID_FORMAT"
+             *     }
+             */
+            details?: Record<string, never>;
         };
     };
     responses: never;
@@ -281,264 +590,4 @@ export interface components {
     pathItems: never;
 }
 export type $defs = Record<string, never>;
-export interface operations {
-    listBooks: {
-        parameters: {
-            query?: {
-                /** @description Page number (1-indexed) */
-                page?: number;
-                /** @description Number of items per page */
-                pageSize?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful response with paginated book list */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BookListResponse"];
-                };
-            };
-            /** @description Server error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-        };
-    };
-    getCart: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Current cart contents */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Cart"];
-                };
-            };
-            /** @description Cart not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-        };
-    };
-    addToCart: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["AddToCartRequest"];
-            };
-        };
-        responses: {
-            /** @description Book added to cart successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Cart"];
-                };
-            };
-            /** @description Invalid book code */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-            /** @description Server error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-        };
-    };
-    updateCart: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateCartRequest"];
-            };
-        };
-        responses: {
-            /** @description Cart updated successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Cart"];
-                };
-            };
-            /** @description Invalid quantity */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-            /** @description Cart not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-        };
-    };
-    listOrders: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description List of orders */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["OrderListResponse"];
-                };
-            };
-            /** @description Server error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-        };
-    };
-    createOrder: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["OrderFormData"];
-            };
-        };
-        responses: {
-            /** @description Order created successfully */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Order"];
-                };
-            };
-            /** @description Validation error */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-            /** @description Server error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-        };
-    };
-    getOrder: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Order number (e.g., ORD-20250110-001) */
-                orderNumber: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Order details */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["OrderDetailResponse"];
-                };
-            };
-            /** @description Order not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-            /** @description Server error */
-            500: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Error"];
-                };
-            };
-        };
-    };
-}
+export type operations = Record<string, never>;

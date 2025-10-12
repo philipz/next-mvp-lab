@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { Metadata } from 'next'
 import { useRouter } from 'next/navigation'
 import { useBooks } from '@/features/books/api/queries'
 import { useAddToCart } from '@/features/cart/api/queries'

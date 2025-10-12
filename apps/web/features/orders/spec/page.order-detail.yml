@@ -1,0 +1,26 @@
+page: OrderDetail
+route: /orders/[orderNumber]
+layout:
+  title: Order Details
+  actions: 
+    - label: Back to Orders
+      href: /orders
+data:
+  source: GET /api/orders/{orderNumber}
+  queryKey: ["orders", "detail", "orderNumber"]
+view:
+  type: detail
+  sections:
+    - title: Order Information
+      fields: [orderNumber, status, createdAt, totalAmount]
+    - title: Customer Information
+      fields: [customer.name, customer.email, customer.phone]
+    - title: Delivery Address
+      fields: [deliveryAddress]
+    - title: Items
+      component: ItemsTable
+requirements:
+  accessibility: "Proper heading hierarchy, breadcrumb navigation"
+  lighthouse:
+    performance: ">=90"
+    accessibility: ">=100"

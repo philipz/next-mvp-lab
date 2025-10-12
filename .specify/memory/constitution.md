@@ -1,92 +1,92 @@
 <!--
-Sync Impact Report:
-- Version change: initial → 1.0.0
-- New constitution for SDD Frontend Template project
-- Added 5 core principles: Specification-First, Contract-First APIs, Feature Modularity, Type Safety, User-Centric Design
-- Added Technology Stack requirements section
-- Added Quality Gates section
-- Templates requiring updates: ✅ all existing templates align with principles
-- Follow-up TODOs: none
+同步影響報告:
+- 版本變更: initial → 1.0.0
+- 為 SDD Frontend Template 專案建立新憲章
+- 新增5個核心原則: 規格優先、契約優先API、功能模組化、類型安全、以用戶為中心的設計
+- 新增技術堆棧要求章節
+- 新增品質關卡章節
+- 需要更新的模板: ✅ 所有現有模板均符合原則要求
+- 後續待辦事項: 無
 -->
 
-# SDD Frontend Template Constitution
+# SDD Frontend Template 專案憲章
 
-## Core Principles
+## 核心原則
 
-### I. Specification-First Development (NON-NEGOTIABLE)
-All features MUST begin with complete specifications before implementation. Requirements must be documented in `requirements.md`, technical design in `design.md`, and acceptance criteria in YAML specs. No code shall be written until specifications are approved and complete. This ensures architectural consistency and prevents scope creep.
+### I. 規格優先開發 (不可妥協)
+所有功能必須在實作前完成完整規格文件。需求必須記錄在 `requirements.md`，技術設計記錄在 `design.md`，驗收標準記錄在 YAML 規格檔中。在規格獲得批准並完整之前，不得編寫任何程式碼。這確保了架構的一致性並防止需求蔓延。
 
-**Rationale**: Specification-driven development eliminates ambiguity, enables parallel work, and provides clear acceptance criteria for quality assurance.
+**理由**: 規格驅動開發消除歧義，支援並行工作，並為品質保證提供明確的驗收標準。
 
-### II. Contract-First APIs
-All API interactions MUST be defined in OpenAPI 3.0+ specifications before implementation. TypeScript types MUST be generated from these contracts using `openapi-typescript`. MSW mocks MUST align exactly to OpenAPI schemas for development and testing.
+### II. 契約優先 API
+所有 API 互動必須在實作前定義在 OpenAPI 3.0+ 規格中。TypeScript 類型必須使用 `openapi-typescript` 從這些契約生成。MSW 模擬必須完全符合 OpenAPI 架構，用於開發和測試。
 
-**Rationale**: Contract-first ensures frontend and backend teams can work independently with guaranteed compatibility, while generated types prevent runtime API errors.
+**理由**: 契約優先確保前端和後端團隊能夠獨立工作並保證相容性，同時生成的類型防止執行時 API 錯誤。
 
-### III. Feature Modularity
-Features MUST be organized in self-contained modules under `features/[feature-name]/` with clear boundaries. Each feature module MUST contain its own API layer (`api/queries.ts`), specifications (`spec/`), and be independently testable. No cross-feature dependencies allowed except through well-defined contracts.
+### III. 功能模組化
+功能必須組織在 `features/[feature-name]/` 下的自包含模組中，具有清晰的邊界。每個功能模組必須包含自己的 API 層 (`api/queries.ts`)、規格 (`spec/`) 並可獨立測試。除了通過明確定義的契約外，不允許跨功能依賴。
 
-**Rationale**: Modular architecture enables independent development, testing, and maintenance while preventing feature entanglement that leads to technical debt.
+**理由**: 模組化架構支援獨立開發、測試和維護，同時防止功能糾纏導致技術債務。
 
-### IV. Type Safety (NON-NEGOTIABLE)
-All code MUST use TypeScript strict mode with no `any` types. Runtime validation MUST use Zod schemas. Query key factories MUST enforce type safety. Form validation MUST be type-safe with proper error handling.
+### IV. 類型安全 (不可妥協)
+所有程式碼必須使用 TypeScript 嚴格模式，不能有 `any` 類型。執行時驗證必須使用 Zod 架構。查詢鍵工廠必須強制類型安全。表單驗證必須是類型安全的，具有適當的錯誤處理。
 
-**Rationale**: Type safety catches errors at compile time, improves developer experience with better IDE support, and reduces production bugs.
+**理由**: 類型安全在編譯時捕獲錯誤，通過更好的 IDE 支援改善開發者體驗，並減少生產錯誤。
 
-### V. User-Centric Design
-All UI decisions MUST prioritize user experience over developer convenience. Components MUST be responsive (mobile-first), accessible (WCAG 2.1 AA), and follow performance budgets (Core Web Vitals). Loading states, error handling, and empty states are mandatory for all user interactions.
+### V. 以用戶為中心的設計
+所有 UI 決策必須優先考慮用戶體驗而非開發者便利。元件必須響應式 (行動優先)、無障礙 (WCAG 2.1 AA) 並遵循效能預算 (Core Web Vitals)。載入狀態、錯誤處理和空狀態對所有用戶互動都是強制性的。
 
-**Rationale**: User experience directly impacts business outcomes. Accessible, performant applications reach wider audiences and provide better conversion rates.
+**理由**: 用戶體驗直接影響業務成果。無障礙、高效能的應用程式能觸及更廣泛的受眾並提供更好的轉換率。
 
-## Technology Stack Requirements
+## 技術堆棧要求
 
-**Mandatory Stack Components**:
-- Next.js 14+ with App Router for routing and SSR
-- TypeScript strict mode for all application code
-- TanStack Query for server state management with query key factories
-- Tailwind CSS for styling with mobile-first responsive design
-- Zod for runtime validation and schema definition
-- MSW for API mocking aligned to OpenAPI contracts
+**必要堆棧元件**:
+- Next.js 14+ 與 App Router 用於路由和 SSR
+- TypeScript 嚴格模式用於所有應用程式碼
+- TanStack Query 用於伺服器狀態管理與查詢鍵工廠
+- Tailwind CSS 用於樣式設計與行動優先響應式設計
+- Zod 用於執行時驗證和架構定義
+- MSW 用於與 OpenAPI 契約對齊的 API 模擬
 
-**Testing Requirements**:
-- Vitest for unit and component testing with minimum 80% coverage
-- Playwright for E2E testing of critical user flows
-- Testing Library for component testing with accessibility focus
+**測試要求**:
+- Vitest 用於單元和元件測試，最低 80% 覆蓋率
+- Playwright 用於關鍵用戶流程的端對端測試
+- Testing Library 用於專注於無障礙性的元件測試
 
-**Code Generation Tools**:
-- `openapi-typescript` for API type generation from OpenAPI specs
-- Custom page generators from YAML specifications
-- Automated task generation from specifications
+**程式碼生成工具**:
+- `openapi-typescript` 從 OpenAPI 規格生成 API 類型
+- 從 YAML 規格自訂頁面生成器
+- 從規格自動生成任務
 
-## Quality Gates
+## 品質關卡
 
-**Pre-Implementation Gates**:
-- Requirements document approved with clear acceptance criteria
-- Technical design document completed with architecture decisions
-- OpenAPI contracts defined for all API interactions
-- UI specifications written in YAML format
+**實作前關卡**:
+- 需求文件已批准，具有明確的驗收標準
+- 技術設計文件已完成，包含架構決策
+- 所有 API 互動已定義 OpenAPI 契約
+- UI 規格已用 YAML 格式編寫
 
-**Implementation Gates**:
-- TypeScript compilation with zero errors in strict mode
-- ESLint passes with zero warnings
-- Unit tests achieve minimum 80% coverage
-- Component accessibility tests pass
-- Performance budgets maintained (Core Web Vitals)
+**實作關卡**:
+- TypeScript 編譯在嚴格模式下零錯誤
+- ESLint 通過零警告
+- 單元測試達到最低 80% 覆蓋率
+- 元件無障礙測試通過
+- 維持效能預算 (Core Web Vitals)
 
-**Pre-Deployment Gates**:
-- E2E tests pass for all critical user journeys
-- API contract tests validate frontend-backend compatibility
-- Security validation completed (XSS protection, input validation)
-- Mobile responsiveness verified across device sizes
+**部署前關卡**:
+- 所有關鍵用戶歷程的端對端測試通過
+- API 契約測試驗證前後端相容性
+- 安全驗證完成 (XSS 防護、輸入驗證)
+- 跨裝置尺寸驗證行動響應式
 
-## Governance
+## 治理
 
-This Constitution supersedes all other development practices and architectural decisions. All feature implementations, code reviews, and technical decisions MUST comply with these principles.
+本憲章優先於所有其他開發實踐和架構決策。所有功能實作、程式碼審查和技術決策必須符合這些原則。
 
-**Amendment Process**: Constitutional changes require documentation of impact analysis, approval from technical leads, and migration plan for existing code. Version increments follow semantic versioning.
+**修正流程**: 憲章變更需要影響分析文件、技術負責人批准以及現有程式碼的遷移計畫。版本遞增遵循語意化版本控制。
 
-**Compliance Review**: All pull requests MUST verify constitutional compliance. Technical debt that violates principles MUST be justified with explicit mitigation plans and timelines.
+**合規審查**: 所有拉取請求必須驗證憲章合規性。違反原則的技術債務必須提供明確的緩解計畫和時間表。
 
-**Runtime Guidance**: Development teams should reference `.spec-workflow/` for operational guidance and implementation patterns while adhering to constitutional principles.
+**執行指引**: 開發團隊應參考 `.spec-workflow/` 取得操作指引和實作模式，同時遵守憲章原則。
 
-**Version**: 1.0.0 | **Ratified**: 2025-10-11 | **Last Amended**: 2025-10-11
+**版本**: 1.0.0 | **批准日期**: 2025-10-11 | **最後修正**: 2025-10-11
