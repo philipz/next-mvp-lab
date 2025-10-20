@@ -5,13 +5,12 @@ import { useCart, useUpdateCart } from '@/features/cart/api/queries'
 import { useCreateOrder } from '@/features/orders/api/queries'
 import { CartTable } from '@/design-system/cart-table'
 import { OrderForm } from '@/design-system/order-form'
-import type { components } from '@/lib/types/openapi'
-
-type OrderFormData = components['schemas']['OrderFormData']
+import type { OrderFormData } from '@/design-system/order-form'
+import type { CreateOrderRequest } from '@/lib/types/api'
 
 export default function CartPage() {
   const router = useRouter()
-  const { data: cart, isLoading: cartLoading, isError: cartError } = useCart()
+  const { data: cart, isLoading: cartLoading } = useCart()
   const updateCart = useUpdateCart()
   const createOrder = useCreateOrder()
 
@@ -25,9 +24,44 @@ export default function CartPage() {
   }
 
   const handleOrderSubmit = async (orderData: OrderFormData) => {
+    const cartItem = cart?.items?.[0]
+    const { customer, deliveryAddress } = orderData
+
+    if (
+      !cartItem ||
+      !cartItem.code ||
+      !cartItem.name ||
+      cartItem.price === undefined ||
+      cartItem.price === null ||
+      cartItem.quantity === undefined ||
+      cartItem.quantity === null
+    ) {
+      console.error('Cannot submit order because the cart item is missing required information', cartItem)
+      return
+    }
+
+    if (!customer?.name || !customer.email || !customer.phone || !deliveryAddress) {
+      console.error('Cannot submit order because customer information is incomplete', customer)
+      return
+    }
+
+    const orderPayload: CreateOrderRequest = {
+      customer: {
+        name: customer.name,
+        email: customer.email,
+        phone: customer.phone,
+      },
+      deliveryAddress,
+      item: {
+        code: cartItem.code,
+        name: cartItem.name,
+        price: Number(cartItem.price),
+        quantity: cartItem.quantity,
+      },
+    }
+
     try {
-      const order = await createOrder.mutateAsync(orderData)
-      // Redirect to orders page or order confirmation on success
+      await createOrder.mutateAsync(orderPayload)
       router.push('/orders')
     } catch (error) {
       console.error('Failed to create order:', error)
@@ -48,7 +82,7 @@ export default function CartPage() {
         />
         
         {/* Order Form - only show if cart has items */}
-        {cart?.item && (
+        {(cart?.items?.length ?? 0) > 0 && (
           <div className="max-w-2xl mx-auto">
             <h2 className="text-2xl font-semibold mb-4">Place Your Order</h2>
             <OrderForm

@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 import type { ReactNode } from "react";
 import { Providers } from "./providers";
+import { BroadcastSyncProvider } from "@/lib/providers/broadcast-sync-provider";
 import { ErrorBoundary } from "@/components/error-boundary";
 import Link from "next/link";
 import Image from "next/image";
@@ -86,7 +87,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </div>
         </nav>
         <ErrorBoundary>
-          <Providers>{children}</Providers>
+          <Providers>
+            <BroadcastSyncProvider />
+            {children}
+          </Providers>
         </ErrorBoundary>
       </body>
     </html>

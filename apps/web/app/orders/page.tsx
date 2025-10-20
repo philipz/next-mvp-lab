@@ -54,7 +54,7 @@ export default function OrdersPage() {
   }
 
   // Empty state
-  if (!data?.orders || data.orders.length === 0) {
+  if (!data || data.length === 0) {
     return (
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">Your Orders</h1>
@@ -88,7 +88,7 @@ export default function OrdersPage() {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {data.orders.map((order) => (
+            {data.map((order) => (
               <tr key={order.orderNumber} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <Link
@@ -100,11 +100,15 @@ export default function OrdersPage() {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                    order.status === 'NEW' ? 'bg-yellow-100 text-yellow-800' :
-                    order.status === 'CONFIRMED' ? 'bg-blue-100 text-blue-800' :
-                    order.status === 'SHIPPED' ? 'bg-purple-100 text-purple-800' :
-                    order.status === 'DELIVERED' ? 'bg-green-100 text-green-800' :
-                    'bg-gray-100 text-gray-800'
+                    order.status === 'NEW'
+                      ? 'bg-yellow-100 text-yellow-800'
+                      : order.status === 'IN_PROCESS'
+                      ? 'bg-blue-100 text-blue-800'
+                      : order.status === 'DELIVERED'
+                      ? 'bg-green-100 text-green-800'
+                      : order.status === 'CANCELLED'
+                      ? 'bg-gray-200 text-gray-800'
+                      : 'bg-red-100 text-red-800'
                   }`}>
                     {order.status}
                   </span>

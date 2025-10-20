@@ -11,7 +11,7 @@ interface OrderDetailPageProps {
 
 export default function OrderDetailPage({ params }: OrderDetailPageProps) {
   const { orderNumber } = params
-  const { data, isLoading, isError, error } = useOrder(orderNumber)
+  const { data: order, isLoading, isError, error } = useOrder(orderNumber)
 
   // Loading state
   if (isLoading) {
@@ -63,8 +63,6 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
     )
   }
 
-  const order = data?.order
-
   if (!order) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -113,13 +111,19 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
             <div>
               <dt className="text-sm font-medium text-gray-500">Status</dt>
               <dd>
-                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                  order.status === 'NEW' ? 'bg-yellow-100 text-yellow-800' :
-                  order.status === 'CONFIRMED' ? 'bg-blue-100 text-blue-800' :
-                  order.status === 'SHIPPED' ? 'bg-purple-100 text-purple-800' :
-                  order.status === 'DELIVERED' ? 'bg-green-100 text-green-800' :
-                  'bg-gray-100 text-gray-800'
-                }`}>
+                <span
+                  className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                    order.status === 'NEW'
+                      ? 'bg-yellow-100 text-yellow-800'
+                      : order.status === 'IN_PROCESS'
+                      ? 'bg-blue-100 text-blue-800'
+                      : order.status === 'DELIVERED'
+                      ? 'bg-green-100 text-green-800'
+                      : order.status === 'CANCELLED'
+                      ? 'bg-gray-200 text-gray-800'
+                      : 'bg-red-100 text-red-800'
+                  }`}
+                >
                   {order.status}
                 </span>
               </dd>
@@ -130,7 +134,7 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
             </div>
             <div>
               <dt className="text-sm font-medium text-gray-500">Total Amount</dt>
-              <dd className="text-lg font-semibold">${order.totalAmount.toFixed(2)}</dd>
+              <dd className="text-lg font-semibold">${(order.totalAmount ?? 0).toFixed(2)}</dd>
             </div>
           </div>
         </div>
@@ -187,20 +191,22 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {order.items.map((item, index) => (
-                <tr key={`${item.code}-${index}`}>
+              {[order.item]
+                .filter(Boolean)
+                .map((item, index) => (
+                <tr key={`${item!.code}-${index}`}>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="font-medium text-gray-900">{item.name}</div>
-                    <div className="text-sm text-gray-500">Code: {item.code}</div>
+                    <div className="font-medium text-gray-900">{item!.name}</div>
+                    <div className="text-sm text-gray-500">Code: {item!.code}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-gray-900">
-                    ${item.price.toFixed(2)}
+                    ${(item!.price ?? 0).toFixed(2)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-gray-900">
-                    {item.quantity}
+                    {item!.quantity}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-gray-900 font-medium">
-                    ${(item.price * item.quantity).toFixed(2)}
+                    ${((item!.price ?? 0) * (item!.quantity ?? 0)).toFixed(2)}
                   </td>
                 </tr>
               ))}

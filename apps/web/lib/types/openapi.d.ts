@@ -4,7 +4,27 @@
  */
 
 export interface paths {
-    "/api/books": {
+    "/api/cart/items/{code}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update item quantity
+         * @description Updates the quantity of an item in the cart
+         */
+        put: operations["updateItemQuantity"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/orders": {
         parameters: {
             query?: never;
             header?: never;
@@ -12,43 +32,94 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get paginated list of books
-         * @description Retrieve books from catalog with pagination support
+         * List orders
+         * @description Retrieves a list of all orders
          */
-        get: {
-            parameters: {
-                query?: {
-                    /** @description Page number (1-indexed) */
-                    page?: number;
-                    /** @description Number of items per page */
-                    pageSize?: number;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Books retrieved successfully */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["BookListResponse"];
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ErrorResponse"];
-                    };
-                };
-            };
+        get: operations["listOrders"];
+        put?: never;
+        /**
+         * Create order
+         * @description Creates a new order from the provided order details
+         */
+        post: operations["createOrder"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/cart/items": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
         };
+        get?: never;
+        put?: never;
+        /**
+         * Add item to cart
+         * @description Adds a product to the shopping cart or updates quantity if already exists
+         */
+        post: operations["addItem"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/products": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get paginated products
+         * @description Retrieves a paginated list of products from the catalog
+         */
+        get: operations["getProducts"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/products/{code}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get product by code
+         * @description Retrieves a specific product by its unique code
+         */
+        get: operations["getProductByCode"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/orders/{orderNumber}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get order details
+         * @description Retrieves detailed information about a specific order
+         */
+        get: operations["getOrder"];
         put?: never;
         post?: never;
         delete?: never;
@@ -65,318 +136,17 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get current shopping cart
-         * @description Retrieve current cart contents
+         * Get cart
+         * @description Retrieves the current shopping cart contents
          */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Cart retrieved successfully */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Cart"];
-                    };
-                };
-                /** @description Cart not found (empty cart) */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ErrorResponse"];
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ErrorResponse"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        /**
-         * Add book to cart
-         * @description Add a book to the shopping cart (replaces existing item in simplified model)
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["AddToCartRequest"];
-                };
-            };
-            responses: {
-                /** @description Book added to cart successfully */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Cart"];
-                    };
-                };
-                /** @description Invalid book code or request */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ErrorResponse"];
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ErrorResponse"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/cart/update": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Update cart item quantity
-         * @description Update the quantity of an item in the cart
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["UpdateCartRequest"];
-                };
-            };
-            responses: {
-                /** @description Cart updated successfully */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Cart"];
-                    };
-                };
-                /** @description Invalid quantity or book code */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ErrorResponse"];
-                    };
-                };
-                /** @description Cart not found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ErrorResponse"];
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ErrorResponse"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/orders": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List all orders
-         * @description Get list of all orders with basic information
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Orders retrieved successfully */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["OrderListResponse"];
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ErrorResponse"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        /**
-         * Create new order
-         * @description Place a new order with customer information and delivery address
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["OrderFormData"];
-                };
-            };
-            responses: {
-                /** @description Order created successfully */
-                201: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Order"];
-                    };
-                };
-                /** @description Validation error or invalid request */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ErrorResponse"];
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ErrorResponse"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/orders/{orderNumber}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get order details
-         * @description Retrieve detailed information for a specific order
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    /** @description Unique order identifier */
-                    orderNumber: string;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Order details retrieved successfully */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["OrderDetailResponse"];
-                    };
-                };
-                /** @description Order not found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ErrorResponse"];
-                    };
-                };
-                /** @description Internal server error */
-                500: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ErrorResponse"];
-                    };
-                };
-            };
-        };
+        get: operations["getCart"];
         put?: never;
         post?: never;
-        delete?: never;
+        /**
+         * Clear cart
+         * @description Removes all items from the shopping cart
+         */
+        delete: operations["clearCart"];
         options?: never;
         head?: never;
         patch?: never;
@@ -386,65 +156,71 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        Book: {
+        /** @description Request to update cart item quantity */
+        UpdateQuantityRequest: {
             /**
-             * @description Unique book identifier
-             * @example book-001
-             */
-            code: string;
-            /**
-             * @description Full book title
-             * @example The Great Gatsby
-             */
-            name: string;
-            /**
-             * @description Author name
-             * @example F. Scott Fitzgerald
-             */
-            author: string;
-            /**
-             * @description Price in USD
-             * @example 19.99
-             */
-            price: number;
-            /**
-             * Format: uri
-             * @description URL to book cover image
-             * @example https://example.com/covers/great-gatsby.jpg
-             */
-            imageUrl: string;
-        };
-        CartItem: {
-            /**
-             * @description Book code reference
-             * @example book-001
-             */
-            code: string;
-            /**
-             * @description Book name (snapshot)
-             * @example The Great Gatsby
-             */
-            name: string;
-            /**
-             * @description Unit price (snapshot)
-             * @example 19.99
-             */
-            price: number;
-            /**
-             * @description Quantity in cart
-             * @example 2
+             * Format: int32
+             * @description New quantity
+             * @example 3
              */
             quantity: number;
         };
-        Cart: {
-            /** @description Single cart item (simplified model) */
-            item?: components["schemas"]["CartItem"] & unknown;
+        /** @description Shopping cart with items and total */
+        CartDto: {
+            /** @description Cart items */
+            items: components["schemas"]["CartItemDto"][];
             /**
-             * @description Calculated total amount
-             * @example 39.98
+             * @description Total amount
+             * @example 99.99
              */
-            totalAmount: number;
+            totalAmount?: number;
+            /**
+             * Format: int32
+             * @description Number of items in cart
+             * @example 3
+             */
+            itemCount?: number;
         };
+        /** @description Shopping cart line item */
+        CartItemDto: {
+            /**
+             * @description Product code
+             * @example P001
+             */
+            code?: string;
+            /**
+             * @description Product name
+             * @example Spring Boot in Action
+             */
+            name?: string;
+            /**
+             * @description Unit price
+             * @example 29.99
+             */
+            price?: number;
+            /**
+             * Format: int32
+             * @description Quantity
+             * @example 2
+             */
+            quantity?: number;
+            /**
+             * @description Subtotal (price * quantity)
+             * @example 59.98
+             */
+            subtotal?: number;
+        };
+        /** @description Request to create a new order */
+        CreateOrderRequest: {
+            customer: components["schemas"]["Customer"];
+            /**
+             * @description Delivery address
+             * @example 742 Evergreen Terrace, Springfield
+             */
+            deliveryAddress: string;
+            item: components["schemas"]["OrderItem"];
+        };
+        /** @description Customer information for order */
         Customer: {
             /**
              * @description Customer full name
@@ -452,7 +228,6 @@ export interface components {
              */
             name: string;
             /**
-             * Format: email
              * @description Customer email address
              * @example john.doe@example.com
              */
@@ -463,124 +238,168 @@ export interface components {
              */
             phone: string;
         };
-        Order: {
+        /** @description Order line item representing a product in the order */
+        OrderItem: {
             /**
-             * @description Unique order identifier
-             * @example ORD-20251011-001
-             */
-            orderNumber: string;
-            /**
-             * @description Current order status
-             * @example NEW
-             * @enum {string}
-             */
-            status: "NEW" | "CONFIRMED" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED";
-            customer: components["schemas"]["Customer"];
-            /**
-             * @description Full delivery address
-             * @example 123 Main St, Anytown, ST 12345, USA
-             */
-            deliveryAddress: string;
-            /** @description Ordered items (snapshot) */
-            items: components["schemas"]["CartItem"][];
-            /**
-             * @description Total order amount
-             * @example 39.98
-             */
-            totalAmount: number;
-            /**
-             * Format: date-time
-             * @description Order creation timestamp
-             * @example 2025-10-11T10:30:00Z
-             */
-            createdAt: string;
-        };
-        AddToCartRequest: {
-            /**
-             * @description Book code to add to cart
-             * @example book-001
-             */
-            code: string;
-        };
-        UpdateCartRequest: {
-            /**
-             * @description Book code to update
-             * @example book-001
+             * @description Product code
+             * @example P100
              */
             code: string;
             /**
-             * @description New quantity
-             * @example 3
+             * @description Product name
+             * @example The Hunger Games
+             */
+            name: string;
+            /**
+             * @description Product price
+             * @example 34
+             */
+            price: number;
+            /**
+             * Format: int32
+             * @description Order quantity
+             * @example 2
              */
             quantity: number;
         };
-        OrderFormData: {
+        /** @description Response after creating an order */
+        CreateOrderResponse: {
+            /**
+             * @description Unique order number
+             * @example ORD-2025-001234
+             */
+            orderNumber: string;
+        };
+        /** @description Request to add item to cart */
+        AddToCartRequest: {
+            /**
+             * @description Product code
+             * @example P001
+             */
+            code: string;
+            /**
+             * Format: int32
+             * @description Quantity to add
+             * @example 1
+             */
+            quantity: number;
+        };
+        /** @description Paginated response containing data and pagination metadata */
+        PagedResult: {
+            /** @description List of items for the current page */
+            data: Record<string, never>[];
+            /**
+             * Format: int64
+             * @description Total number of elements across all pages
+             * @example 100
+             */
+            totalElements: number;
+            /**
+             * Format: int32
+             * @description Current page number (1-based)
+             * @example 1
+             */
+            pageNumber: number;
+            /**
+             * Format: int32
+             * @description Total number of pages
+             * @example 10
+             */
+            totalPages: number;
+            /**
+             * @description Whether this is the first page
+             * @example true
+             */
+            isFirst: boolean;
+            /**
+             * @description Whether this is the last page
+             * @example false
+             */
+            isLast: boolean;
+            /**
+             * @description Whether there is a next page available
+             * @example true
+             */
+            hasNext: boolean;
+            /**
+             * @description Whether there is a previous page available
+             * @example false
+             */
+            hasPrevious: boolean;
+        };
+        /** @description Product information */
+        ProductDto: {
+            /**
+             * @description Unique product code
+             * @example P100
+             */
+            code: string;
+            /**
+             * @description Product name
+             * @example The Hunger Games
+             */
+            name: string;
+            /**
+             * @description Product description
+             * @example Winning will make you famous. Losing means certain death...
+             */
+            description?: string;
+            /**
+             * @description Product image URL
+             * @example https://images.sivalabs.in/products/the-hunger-games.jpg
+             */
+            imageUrl?: string;
+            /**
+             * @description Product price
+             * @example 34
+             */
+            price: number;
+        };
+        /** @description Summary view of an order */
+        OrderView: {
+            /**
+             * @description Unique order number
+             * @example ORD-2025-001234
+             */
+            orderNumber: string;
+            /**
+             * @description Order status
+             * @example NEW
+             * @enum {string}
+             */
+            status: "NEW" | "IN_PROCESS" | "DELIVERED" | "CANCELLED" | "ERROR";
+            customer: components["schemas"]["Customer"];
+        };
+        /** @description Complete order details */
+        OrderDto: {
+            /**
+             * @description Unique order number
+             * @example ORD-2025-001234
+             */
+            orderNumber: string;
+            item: components["schemas"]["OrderItem"];
             customer: components["schemas"]["Customer"];
             /**
-             * @description Complete delivery address
-             * @example 123 Main St, Anytown, ST 12345, USA
+             * @description Delivery address
+             * @example 742 Evergreen Terrace, Springfield
              */
             deliveryAddress: string;
-        };
-        BookListResponse: {
-            /** @description Array of books for current page */
-            data: components["schemas"]["Book"][];
-            pagination: {
-                /**
-                 * @description Current page number (1-indexed)
-                 * @example 1
-                 */
-                page: number;
-                /**
-                 * @description Items per page
-                 * @example 10
-                 */
-                pageSize: number;
-                /**
-                 * @description Total number of pages
-                 * @example 5
-                 */
-                totalPages: number;
-                /**
-                 * @description Total books in catalog
-                 * @example 42
-                 */
-                totalItems: number;
-            };
-        };
-        OrderListResponse: {
-            orders: {
-                /** @example ORD-20251011-001 */
-                orderNumber: string;
-                /**
-                 * @example NEW
-                 * @enum {string}
-                 */
-                status: "NEW" | "CONFIRMED" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED";
-            }[];
-        };
-        OrderDetailResponse: {
-            order: components["schemas"]["Order"];
-        };
-        ErrorResponse: {
             /**
-             * @description Error type identifier
-             * @example VALIDATION_ERROR
+             * @description Order status
+             * @example NEW
+             * @enum {string}
              */
-            error: string;
+            status: "NEW" | "IN_PROCESS" | "DELIVERED" | "CANCELLED" | "ERROR";
             /**
-             * @description Human-readable error message
-             * @example Invalid email format
+             * Format: date-time
+             * @description Order creation timestamp
              */
-            message: string;
+            createdAt: string;
             /**
-             * @description Additional error details
-             * @example {
-             *       "field": "customer.email",
-             *       "code": "INVALID_FORMAT"
-             *     }
+             * @description Total order amount (price × quantity)
+             * @example 68
              */
-            details?: Record<string, never>;
+            readonly totalAmount?: number;
         };
     };
     responses: never;
@@ -590,4 +409,299 @@ export interface components {
     pathItems: never;
 }
 export type $defs = Record<string, never>;
-export type operations = Record<string, never>;
+export interface operations {
+    updateItemQuantity: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                code: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateQuantityRequest"];
+            };
+        };
+        responses: {
+            /** @description Item quantity updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["CartDto"];
+                };
+            };
+            /** @description Invalid quantity */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["CartDto"];
+                };
+            };
+            /** @description Item not found in cart */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["CartDto"];
+                };
+            };
+        };
+    };
+    listOrders: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Orders retrieved successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["OrderView"];
+                };
+            };
+            /** @description Orders service unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["OrderView"][];
+                };
+            };
+        };
+    };
+    createOrder: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateOrderRequest"];
+            };
+        };
+        responses: {
+            /** @description Order created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["CreateOrderResponse"];
+                };
+            };
+            /** @description Invalid order data */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["CreateOrderResponse"];
+                };
+            };
+            /** @description Orders service unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["CreateOrderResponse"];
+                };
+            };
+        };
+    };
+    addItem: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AddToCartRequest"];
+            };
+        };
+        responses: {
+            /** @description Item added to cart successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["CartDto"];
+                };
+            };
+            /** @description Invalid request data */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["CartDto"];
+                };
+            };
+            /** @description Product not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["CartDto"];
+                };
+            };
+        };
+    };
+    getProducts: {
+        parameters: {
+            query?: {
+                /**
+                 * @description Page number (1-based)
+                 * @example 1
+                 */
+                page?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successfully retrieved product list */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["PagedResult"];
+                };
+            };
+        };
+    };
+    getProductByCode: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /**
+                 * @description Product code
+                 * @example P100
+                 */
+                code: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successfully retrieved product */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ProductDto"];
+                };
+            };
+            /** @description Product not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    getOrder: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                orderNumber: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Order retrieved successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["OrderDto"];
+                };
+            };
+            /** @description Order not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["OrderDto"];
+                };
+            };
+            /** @description Orders service unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["OrderDto"];
+                };
+            };
+        };
+    };
+    getCart: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Cart retrieved successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["CartDto"];
+                };
+            };
+        };
+    };
+    clearCart: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Cart cleared successfully */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+}

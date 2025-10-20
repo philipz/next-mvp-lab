@@ -1,22 +1,13 @@
-import type { components } from '@/lib/types/openapi';
-import { ProductCard } from './product-card';
-
-type Book = components['schemas']['Book'];
+import type { Product } from '@/lib/types/api'
+import { ProductCard } from './product-card'
 
 interface ProductGridProps {
-  books: Book[];
-  onBuy: (code: string) => void;
-  loading?: boolean;
+  products: Product[]
+  onBuy: (code: string) => void
+  loading?: boolean
 }
 
-/**
- * ProductGrid component displays a responsive grid of book cards
- * Layout: 1 column on mobile, 3 columns on tablet, 5 columns on desktop
- * @param books - Array of books to display
- * @param onBuy - Callback function triggered when Buy button is clicked
- * @param loading - Optional loading state to show skeleton UI
- */
-export function ProductGrid({ books, onBuy, loading = false }: ProductGridProps) {
+export function ProductGrid({ products, onBuy, loading = false }: ProductGridProps) {
   if (loading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
@@ -43,7 +34,7 @@ export function ProductGrid({ books, onBuy, loading = false }: ProductGridProps)
     );
   }
 
-  if (books.length === 0) {
+  if (products.length === 0) {
     return (
       <div className="text-center py-12">
         <p className="text-gray-500 text-lg">No books available</p>
@@ -53,8 +44,8 @@ export function ProductGrid({ books, onBuy, loading = false }: ProductGridProps)
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
-      {books.map((book) => (
-        <ProductCard key={book.code} book={book} onBuy={onBuy} />
+      {products.map((product) => (
+        <ProductCard key={product.code} product={product} onBuy={onBuy} />
       ))}
     </div>
   );

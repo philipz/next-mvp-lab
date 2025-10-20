@@ -4,7 +4,8 @@ import { Component, type ReactNode, type ErrorInfo } from 'react'
 
 interface Props {
   children: ReactNode
-  fallback?: ReactNode
+  fallback?: ReactNode | ((params: { error?: Error; reset: () => void }) => ReactNode)
+  onRetry?: () => void
 }
 
 interface State {
@@ -16,6 +17,7 @@ export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
     this.state = { hasError: false }
+    this.handleRetry = this.handleRetry.bind(this)
   }
 
   static getDerivedStateFromError(error: Error): State {
@@ -27,9 +29,19 @@ export class ErrorBoundary extends Component<Props, State> {
     console.error('ErrorBoundary caught an error:', error, errorInfo)
   }
 
+  handleRetry() {
+    this.setState({ hasError: false, error: undefined })
+    if (this.props.onRetry) {
+      this.props.onRetry()
+    }
+  }
+
   render() {
     if (this.state.hasError) {
       if (this.props.fallback) {
+        if (typeof this.props.fallback === 'function') {
+          return this.props.fallback({ error: this.state.error, reset: this.handleRetry })
+        }
         return this.props.fallback
       }
 
@@ -60,10 +72,10 @@ export class ErrorBoundary extends Component<Props, State> {
               </p>
               <div className="space-y-2">
                 <button
-                  onClick={() => window.location.reload()}
+                  onClick={this.handleRetry}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded transition-colors"
                 >
-                  Refresh Page
+                  Try Again
                 </button>
                 <button
                   onClick={() => (window.location.href = '/')}

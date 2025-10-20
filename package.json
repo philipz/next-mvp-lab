@@ -8,9 +8,11 @@
     "start": "next start apps/web -p 3000",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "gen:types": "openapi-typescript docs/specs/api/openapi.yaml -o apps/web/lib/types/openapi.d.ts",
+    "gen:types": "openapi-typescript http://localhost:8080/api-docs -o apps/web/lib/types/openapi.d.ts",
+    "gen:types:file": "openapi-typescript docs/specs/api/openapi.yaml -o apps/web/lib/types/openapi.d.ts",
     "gen:page": "ts-node --transpile-only scripts/gen-page-from-spec.ts apps/web/features/customers/spec/page.customer-list.yml",
-    "test": "vitest run --coverage",
+    "init:msw": "msw init apps/web/public/ --save",
+    "test": "vitest run",
     "test:ui": "vitest --ui",
     "test:e2e": "playwright test"
   },
@@ -24,6 +26,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.48.2",
+    "@tanstack/react-query-devtools": "^5.51.0",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.0",
     "@types/js-yaml": "^4.0.9",
@@ -43,5 +46,10 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
     "vitest": "^2.0.5"
+  },
+  "msw": {
+    "workerDirectory": [
+      "apps/web/public"
+    ]
   }
 }

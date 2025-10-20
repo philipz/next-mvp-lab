@@ -11,11 +11,16 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["vitest/globals", "@types/node"],
+    "types": ["vitest", "vitest/globals", "@types/node"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["apps/web/*"]
     }
   },
-  "include": ["apps", "scripts", "vitest.config.ts", "playwright.config.ts"]
+  "include": ["apps", "scripts", "vitest.config.ts", "playwright.config.ts"],
+  "exclude": [
+    "apps/**/__tests__/**",
+    "apps/**/*.test.ts",
+    "apps/**/*.test.tsx"
+  ]
 }
