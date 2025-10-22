@@ -19,7 +19,7 @@ export default function CartPage() {
       await updateCart.mutateAsync({ code, quantity })
     } catch (error) {
       console.error('Failed to update cart:', error)
-      // Error handling - could show a toast/alert here
+      // TODO: surface to UI (toast/ErrorMessage) so users see the failure
     }
   }
 
@@ -89,6 +89,21 @@ export default function CartPage() {
               onSubmit={handleOrderSubmit}
               loading={createOrder.isPending}
             />
+            {createOrder.isError && (
+              <div className="mt-4">
+                <p className="text-sm text-red-700 bg-red-50 border border-red-200 rounded p-3">
+                  {createOrder.error instanceof Error
+                    ? createOrder.error.message
+                    : 'Failed to place order.'}
+                </p>
+              </div>
+            )}
+            {(cart?.items?.length ?? 0) > 1 && (
+              <div className="mt-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded p-3">
+                Multiple items in cart, but checkout currently supports one item per order.
+                Please remove extra items or update the backend to accept multiple items.
+              </div>
+            )}
           </div>
         )}
       </div>

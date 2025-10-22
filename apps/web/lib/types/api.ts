@@ -30,7 +30,7 @@ export const toPagedResult = <T>(
   const safePayload = payload ?? ({
     data: [],
     totalElements: 0,
-    pageNumber: 0,
+    pageNumber: 1,
     totalPages: 0,
     isFirst: true,
     isLast: true,
@@ -38,23 +38,58 @@ export const toPagedResult = <T>(
     hasPrevious: false,
   } as RawPagedResult)
 
-  const { data, ...metadata } = safePayload
-  const items = Array.isArray(data) ? data.map((item) => mapItem(item)) : []
+  const { data, pagination, ...metadata } = safePayload as RawPagedResult & {
+    pagination?: Record<string, unknown>
+  }
+  const normalizedMeta = { ...metadata }
+
+  if (pagination && typeof pagination === 'object') {
+    const { page, totalItems, totalPages, hasNext, hasPrevious } = pagination as {
+      page?: number
+      totalItems?: number
+      totalPages?: number
+      hasNext?: boolean
+      hasPrevious?: boolean
+    }
+
+    if (typeof page === 'number') {
+      normalizedMeta.pageNumber = page
+      normalizedMeta.isFirst = page <= 1
+    }
+
+    if (typeof totalItems === 'number') {
+      normalizedMeta.totalElements = totalItems
+    }
+
+    if (typeof totalPages === 'number') {
+      normalizedMeta.totalPages = totalPages
+      if (typeof page === 'number') {
+        normalizedMeta.isLast = page >= totalPages
+        normalizedMeta.hasNext = page < totalPages
+        normalizedMeta.hasPrevious = page > 1
+      }
+    }
+
+    if (typeof hasNext === 'boolean') {
+      normalizedMeta.hasNext = hasNext
+    }
+
+    if (typeof hasPrevious === 'boolean') {
+      normalizedMeta.hasPrevious = hasPrevious
+    }
+  }
+
+  const items = data.map((item) => mapItem(item))
 
   return {
-    ...metadata,
+    ...normalizedMeta,
     data: items,
   }
 }
 
-export const ensureOrderArray = (payload: OrdersResponse): OrderSummary[] => {
-  if (!payload) {
-    return []
-  }
-
-  if (Array.isArray(payload)) {
-    return payload as OrderSummary[]
-  }
-
-  return [payload as OrderSummary]
+export const ensureOrderArray = (
+  payload?: OrderSummary | OrderSummary[]
+): OrderSummary[] => {
+  if (!payload) return []
+  return Array.isArray(payload) ? payload : [payload]
 }

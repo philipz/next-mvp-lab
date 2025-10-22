@@ -10,7 +10,10 @@ export function ProductCard({ product, onBuy }: ProductCardProps) {
   const displayImage = product.imageUrl ?? '/images/books.png'
 
   return (
-    <div className="card h-full flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+    <article
+      className="card h-full flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+      data-testid="product-card"
+    >
       <div className="relative h-80 w-full">
         <Image
           src={displayImage}
@@ -41,6 +44,6 @@ export function ProductCard({ product, onBuy }: ProductCardProps) {
           Buy
         </button>
       </div>
-    </div>
+    </article>
   )
 }

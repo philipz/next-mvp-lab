@@ -32,20 +32,12 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
     }
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent, action: () => void) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault()
-      action()
-    }
-  }
-
   return (
     <nav aria-label="Page navigation" className="flex justify-center my-4">
       <ul className="flex items-center gap-2">
         <li>
           <button
             onClick={handleFirst}
-            onKeyDown={(e) => handleKeyDown(e, handleFirst)}
             disabled={isFirstPage}
             aria-disabled={isFirstPage}
             aria-label={`Go to first page`}
@@ -57,7 +49,6 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
         <li>
           <button
             onClick={handlePrevious}
-            onKeyDown={(e) => handleKeyDown(e, handlePrevious)}
             disabled={isFirstPage}
             aria-disabled={isFirstPage}
             aria-label={`Go to previous page (page ${currentPage - 1})`}
@@ -74,7 +65,6 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
         <li>
           <button
             onClick={handleNext}
-            onKeyDown={(e) => handleKeyDown(e, handleNext)}
             disabled={isLastPage}
             aria-disabled={isLastPage}
             aria-label={`Go to next page (page ${currentPage + 1})`}
@@ -86,7 +76,6 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
         <li>
           <button
             onClick={handleLast}
-            onKeyDown={(e) => handleKeyDown(e, handleLast)}
             disabled={isLastPage}
             aria-disabled={isLastPage}
             aria-label={`Go to last page (page ${totalPages})`}

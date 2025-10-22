@@ -32,7 +32,7 @@ export const useProducts = (page = 1, pageSize = 10) =>
 
 export const useProduct = (code: string | null | undefined) =>
   useQuery({
-    queryKey: code ? productKeys.detail(code) : productKeys.detail(''),
+    queryKey: code ? productKeys.detail(code) : ['products', 'detail', '__no-code__'] as const,
     queryFn: async () => {
       if (!code) {
         return null

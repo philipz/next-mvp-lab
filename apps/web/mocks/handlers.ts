@@ -123,6 +123,7 @@ const upsertCartItem = (product: Product, quantity: number) => {
   }
 
   cartItems = [
+    ...cartItems,
     {
       code: product.code,
       name: product.name,
@@ -230,8 +231,10 @@ export const handlers = [
       return HttpResponse.json({ message: 'Product not found' }, { status: 404 })
     }
 
-    const quantity = Math.max(body.quantity ?? 1, 1)
-    upsertCartItem(product, quantity)
+    const toAdd = Math.max(body.quantity ?? 1, 1)
+    const existing = ensureCartHasItem(product.code)
+    const newQuantity = (existing?.quantity ?? 0) + toAdd
+    upsertCartItem(product, newQuantity)
 
     return HttpResponse.json(getCart(), { status: 201 })
   }),

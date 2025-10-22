@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQueryClient, type MutationKey } from '@tanstack/react-query'
 import { cartKeys } from '@/lib/hooks/use-cart'
 
 const CHANNEL_NAME = 'bookstore-sync'
@@ -14,19 +14,13 @@ const CART_MUTATION_KEYS = [
   ['cart', 'clear'],
 ] as const
 
-type MutationKey = readonly unknown[] | string | undefined
-
-const matchesMutationKey = (key: MutationKey) => {
-  if (!key) {
+const matchesMutationKey = (key: MutationKey | undefined) => {
+  if (!Array.isArray(key)) {
     return false
   }
 
-  if (typeof key === 'string') {
-    return CART_MUTATION_KEYS.some((target) => target.join(':') === key)
-  }
-
   return CART_MUTATION_KEYS.some(
-    (target) => Array.isArray(key) && target.length === key.length && target.every((value, index) => key[index] === value)
+    (target) => target.length === key.length && target.every((value, index) => key[index] === value)
   )
 }
 
@@ -73,7 +67,7 @@ export const useBroadcastSync = () => {
         return
       }
 
-      const key = mutation.options.mutationKey as MutationKey
+      const key = mutation.options.mutationKey as MutationKey | undefined
       if (!matchesMutationKey(key)) {
         return
       }

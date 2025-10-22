@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { apiClient } from '@/lib/api/client'
+import { HttpError } from '@/lib/api/errors'
 import type {
   Cart,
   CartResponse,
@@ -21,12 +22,9 @@ const mapCart = (payload: CartResponse | AddToCartResponse | UpdateCartResponse)
     itemCount: 0,
   }
 
-  const resolved = (payload ?? fallback) as Cart
-  return {
-    ...fallback,
-    ...resolved,
-    items: Array.isArray((resolved as Cart).items) ? (resolved as Cart).items : [],
-  }
+  const resolved = (payload ?? {}) as Partial<Cart>
+  const items = Array.isArray(resolved.items) ? resolved.items : []
+  return { ...fallback, ...resolved, items }
 }
 
 type AddToCartInput = string | (Pick<AddToCartRequest, 'code'> & Partial<AddToCartRequest>)
@@ -36,8 +34,16 @@ export const useCart = () =>
   useQuery({
     queryKey: cartKeys.current(),
     queryFn: async () => {
-      const response = await apiClient.get<CartResponse>('/api/cart')
-      return mapCart(response)
+      try {
+        const response = await apiClient.get<CartResponse>('/api/cart')
+        return mapCart(response)
+      } catch (error) {
+        if (error instanceof HttpError && error.status === 404) {
+          const emptyCart: Cart = { items: [], totalAmount: 0, itemCount: 0 }
+          return mapCart(emptyCart as CartResponse)
+        }
+        throw error
+      }
     },
     staleTime: 30_000,
   })

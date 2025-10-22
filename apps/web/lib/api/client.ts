@@ -65,7 +65,8 @@ const extractError = async (
   const fallbackMessage = response.statusText || 'Request failed';
   const contentType = response.headers.get('content-type') ?? '';
 
-  if (contentType.includes('application/json')) {
+  const isJson = /\bjson\b/i.test(contentType);
+  if (isJson) {
     try {
       const body = await response.json();
       if (body && typeof body === 'object') {
@@ -106,7 +107,8 @@ const parseResponse = async <T>(response: Response): Promise<T> => {
   }
 
   const contentType = response.headers.get('content-type') ?? '';
-  if (contentType.includes('application/json')) {
+  const isJson = /\bjson\b/i.test(contentType);
+  if (isJson) {
     return (await response.json()) as T;
   }
 
@@ -130,15 +132,18 @@ const request = async <T>(path: string, init: RequestInit = {}): Promise<T> => {
     headers.set('Accept', 'application/json');
   }
 
+  const resolvedUrl = resolveUrl(path);
   const requestInit: RequestInit = {
     ...init,
     signal,
     headers,
-    credentials: 'include',
+    credentials:
+      init.credentials ??
+      (ABSOLUTE_URL_REGEX.test(resolvedUrl) ? 'omit' : 'same-origin'),
   };
 
   try {
-    const response = await fetch(resolveUrl(path), requestInit);
+    const response = await fetch(resolvedUrl, requestInit);
 
     if (!response.ok) {
       const { message, details } = await extractError(response);
@@ -181,15 +186,23 @@ const request = async <T>(path: string, init: RequestInit = {}): Promise<T> => {
   }
 };
 
-const buildJsonRequestInit = (
+const buildRequestInit = (
   method: 'POST' | 'PUT' | 'DELETE',
   body: unknown,
   init?: RequestInit
 ): RequestInit => {
   const headers = new Headers(init?.headers);
-  const needsJsonBody = body !== undefined && body !== null;
+  const hasBody = body !== undefined && body !== null;
+  const isForm = typeof FormData !== 'undefined' && body instanceof FormData;
+  const isBlob = typeof Blob !== 'undefined' && body instanceof Blob;
+  const isArrayBuffer = typeof ArrayBuffer !== 'undefined' && body instanceof ArrayBuffer;
+  const isArrayBufferView =
+    typeof ArrayBuffer !== 'undefined' && ArrayBuffer.isView(body as ArrayBufferView);
+  const isString = typeof body === 'string';
+  const shouldJsonify =
+    hasBody && !isForm && !isBlob && !isArrayBuffer && !isArrayBufferView && !isString;
 
-  if (needsJsonBody && !headers.has('Content-Type')) {
+  if (shouldJsonify && !headers.has('Content-Type')) {
     headers.set('Content-Type', 'application/json');
   }
 
@@ -199,8 +212,10 @@ const buildJsonRequestInit = (
     headers,
   };
 
-  if (needsJsonBody) {
+  if (shouldJsonify) {
     requestInit.body = JSON.stringify(body);
+  } else if (hasBody) {
+    requestInit.body = body as BodyInit;
   } else if (init?.body) {
     requestInit.body = init.body;
   }
@@ -213,12 +228,12 @@ export const apiClient = {
     return request<T>(path, init);
   },
   post<T>(path: string, body?: unknown, init?: RequestInit): Promise<T> {
-    return request<T>(path, buildJsonRequestInit('POST', body, init));
+    return request<T>(path, buildRequestInit('POST', body, init));
   },
   put<T>(path: string, body?: unknown, init?: RequestInit): Promise<T> {
-    return request<T>(path, buildJsonRequestInit('PUT', body, init));
+    return request<T>(path, buildRequestInit('PUT', body, init));
   },
   delete<T>(path: string, init?: RequestInit): Promise<T> {
-    return request<T>(path, buildJsonRequestInit('DELETE', undefined, init));
+    return request<T>(path, buildRequestInit('DELETE', undefined, init));
   },
 };

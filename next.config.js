@@ -24,6 +24,7 @@ const API_PROXY_TARGET = resolveProxyTarget();
 const nextConfig = {
   output: 'standalone',
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',

@@ -11,6 +11,7 @@ interface PerformanceMetric {
 const THRESHOLDS = {
   CLS: { good: 0.1, poor: 0.25 },
   FID: { good: 100, poor: 300 },
+  INP: { good: 200, poor: 500 },
   FCP: { good: 1800, poor: 3000 },
   LCP: { good: 2500, poor: 4000 },
   TTFB: { good: 800, poor: 1800 },
@@ -33,9 +34,11 @@ function reportMetric(metric: PerformanceMetric) {
   
   // Example: Send to Google Analytics 4
   if (typeof window !== 'undefined' && (window as any).gtag) {
+    const value =
+      metric.name === 'CLS' ? Math.round(metric.value * 1000) : Math.round(metric.value)
     ;(window as any).gtag('event', 'web_vital', {
       name: metric.name,
-      value: Math.round(metric.value),
+      value,
       rating: metric.rating,
     })
   }
@@ -50,13 +53,19 @@ export function observeWebVitals() {
     // Observe Largest Contentful Paint (LCP)
     new PerformanceObserver((entryList) => {
       const entries = entryList.getEntries()
-      const lastEntry = entries[entries.length - 1]
+      if (entries.length === 0) return
+      const lastEntry = entries[entries.length - 1] as PerformanceEntry & {
+        renderTime?: number
+        loadTime?: number
+        startTime: number
+      }
+      const start = lastEntry.renderTime ?? lastEntry.startTime
       reportMetric({
         name: 'LCP',
-        value: lastEntry.startTime,
-        rating: getRating('LCP', lastEntry.startTime),
+        value: start,
+        rating: getRating('LCP', start),
       })
-    }).observe({ entryTypes: ['largest-contentful-paint'] })
+    }).observe({ type: 'largest-contentful-paint', buffered: true })
 
     // Observe First Contentful Paint (FCP)
     new PerformanceObserver((entryList) => {
@@ -76,8 +85,9 @@ export function observeWebVitals() {
     let clsValue = 0
     new PerformanceObserver((entryList) => {
       for (const entry of entryList.getEntries()) {
-        if (!(entry as any).hadRecentInput) {
-          clsValue += (entry as any).value
+        const shift = entry as PerformanceEntry & { hadRecentInput?: boolean; value?: number }
+        if (!shift.hadRecentInput && typeof shift.value === 'number') {
+          clsValue += shift.value
         }
       }
       reportMetric({
@@ -85,13 +95,33 @@ export function observeWebVitals() {
         value: clsValue,
         rating: getRating('CLS', clsValue),
       })
-    }).observe({ entryTypes: ['layout-shift'] })
+    }).observe({ type: 'layout-shift', buffered: true })
 
-    // Observe First Input Delay (FID) using event timing
+    // Observe Interaction to Next Paint (INP)
+    new PerformanceObserver((entryList) => {
+      const entries = entryList.getEntries()
+      if (entries.length === 0) return
+      const last = entries[entries.length - 1] as PerformanceEntry & { duration?: number }
+      if (typeof last.duration !== 'number') return
+      const duration = last.duration
+      reportMetric({
+        name: 'INP',
+        value: duration,
+        rating: getRating('INP', duration),
+      })
+    }).observe({ type: 'interaction-to-next-paint', buffered: true })
+
+    // Observe First Input Delay (FID) using event timing (legacy)
     new PerformanceObserver((entryList) => {
       for (const entry of entryList.getEntries()) {
-        const eventEntry = entry as any // PerformanceEventTiming
-        if (eventEntry.processingStart && eventEntry.startTime) {
+        const eventEntry = entry as PerformanceEntry & {
+          processingStart?: number
+          startTime?: number
+        }
+        if (
+          typeof eventEntry.processingStart === 'number' &&
+          typeof eventEntry.startTime === 'number'
+        ) {
           const delay = eventEntry.processingStart - eventEntry.startTime
           reportMetric({
             name: 'FID',

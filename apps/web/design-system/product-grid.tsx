@@ -37,7 +37,7 @@ export function ProductGrid({ products, onBuy, loading = false }: ProductGridPro
   if (products.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500 text-lg">No books available</p>
+        <p className="text-gray-500 text-lg">No products available</p>
       </div>
     );
   }

@@ -103,7 +103,7 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
         </div>
         
         <div className="px-6 py-4 space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <dl className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <dt className="text-sm font-medium text-gray-500">Order Number</dt>
               <dd className="text-lg font-mono">{order.orderNumber}</dd>
@@ -136,7 +136,7 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
               <dt className="text-sm font-medium text-gray-500">Total Amount</dt>
               <dd className="text-lg font-semibold">${(order.totalAmount ?? 0).toFixed(2)}</dd>
             </div>
-          </div>
+          </dl>
         </div>
       </div>
 
@@ -146,7 +146,7 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
         </div>
         
         <div className="px-6 py-4 space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <dl className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <dt className="text-sm font-medium text-gray-500">Name</dt>
               <dd>{order.customer.name}</dd>
@@ -163,7 +163,7 @@ export default function OrderDetailPage({ params }: OrderDetailPageProps) {
               <dt className="text-sm font-medium text-gray-500">Delivery Address</dt>
               <dd>{order.deliveryAddress}</dd>
             </div>
-          </div>
+          </dl>
         </div>
       </div>
 

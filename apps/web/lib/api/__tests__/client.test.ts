@@ -49,7 +49,7 @@ describe('apiClient', () => {
       ...init,
     })
 
-  it('sends requests with credentials included', async () => {
+  it('uses same-origin credentials for relative API paths', async () => {
     const fetchMock = vi
       .fn()
       .mockResolvedValue(mockJsonResponse({ success: true }))
@@ -58,10 +58,13 @@ describe('apiClient', () => {
 
     await apiClient.get('/books')
 
-    expect(fetchMock).toHaveBeenCalledWith('/api/books', expect.objectContaining({ credentials: 'include' }))
+    expect(fetchMock).toHaveBeenCalledWith(
+      '/api/books',
+      expect.objectContaining({ credentials: 'same-origin' })
+    )
   })
 
-  it('respects numeric environment base URLs when resolving paths', async () => {
+  it('respects absolute environment base URLs when resolving paths', async () => {
     process.env.NEXT_PUBLIC_API_URL = 'https://backend.internal'
     const fetchMock = vi
       .fn()
@@ -73,7 +76,7 @@ describe('apiClient', () => {
 
     expect(fetchMock).toHaveBeenCalledWith(
       'https://backend.internal/status',
-      expect.any(Object),
+      expect.objectContaining({ credentials: 'omit' }),
     )
   })
 

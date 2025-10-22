@@ -12,7 +12,7 @@ interface ErrorMessageProps {
 
 const isRetryable = (error: unknown): boolean => {
   if (error instanceof HttpError) {
-    if (error.status === 408 || error.status === 499) {
+    if (error.status === 408 || error.status === 429 || error.status === 499) {
       return true
     }
     if (error.status >= 500 || error.status === 0) {
@@ -31,6 +31,13 @@ const isRetryable = (error: unknown): boolean => {
 
 const getMessage = (error: unknown): { title: string; body: string } => {
   if (error instanceof HttpError) {
+    if (error.status === 0) {
+      return {
+        title: 'Network error',
+        body: 'We were unable to reach the server. Check your connection and try again.',
+      }
+    }
+
     if (error.status >= 500) {
       return {
         title: 'Service unavailable',
@@ -77,7 +84,11 @@ export function ErrorMessage({ error, onRetry, title, description }: ErrorMessag
   const message = getMessage(error)
 
   return (
-    <div className="rounded-lg border border-red-200 bg-red-50 p-6 text-red-800">
+    <div
+      role="alert"
+      aria-live="polite"
+      className="rounded-lg border border-red-200 bg-red-50 p-6 text-red-800"
+    >
       <div className="mb-4 flex items-center gap-3">
         <svg
           className="h-6 w-6 flex-shrink-0 text-red-500"

@@ -1,10 +1,23 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
+import { Pagination } from '@/design-system/pagination'
 import { useOrders } from '@/features/orders/api/queries'
 
+const PAGE_SIZE = 10
+
 export default function OrdersPage() {
-  const { data, isLoading, isError, error } = useOrders()
+  const [currentPage, setCurrentPage] = useState(1)
+  const { data, isLoading, isError, error } = useOrders(currentPage, PAGE_SIZE)
+  const orders = data?.data ?? []
+  const totalPages = data?.totalPages ?? 0
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
 
   // Loading state
   if (isLoading) {
@@ -54,7 +67,7 @@ export default function OrdersPage() {
   }
 
   // Empty state
-  if (!data || data.length === 0) {
+  if (!orders || orders.length === 0) {
     return (
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">Your Orders</h1>
@@ -88,7 +101,7 @@ export default function OrdersPage() {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {data.map((order) => (
+            {orders.map((order) => (
               <tr key={order.orderNumber} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <Link
@@ -118,6 +131,14 @@ export default function OrdersPage() {
           </tbody>
         </table>
       </div>
+
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
   )
 }

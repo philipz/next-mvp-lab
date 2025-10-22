@@ -82,7 +82,7 @@ export function CartTable({ cart, onQuantityChange, loading }: CartTableProps) {
 
               const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                 const newQuantity = parseInt(e.target.value, 10)
-                if (newQuantity > 0 && code) {
+                if (!Number.isNaN(newQuantity) && newQuantity > 0 && code) {
                   onQuantityChange(code, newQuantity)
                 }
               }
@@ -134,7 +134,7 @@ export function CartTable({ cart, onQuantityChange, loading }: CartTableProps) {
 
           const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const newQuantity = parseInt(e.target.value, 10)
-            if (newQuantity > 0 && code) {
+            if (!Number.isNaN(newQuantity) && newQuantity > 0 && code) {
               onQuantityChange(code, newQuantity)
             }
           }
