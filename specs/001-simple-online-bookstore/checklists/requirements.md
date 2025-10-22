@@ -2,7 +2,7 @@
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning
 **Created**: 2025-10-11
-**Feature**: [Simple Online Bookstore](/workspaces/vue-nuxt/specs/001-simple-online-bookstore/spec.md)
+**Feature**: [Simple Online Bookstore](/workspaces/frontend-next/specs/001-simple-online-bookstore/spec.md)
 
 ## Content Quality
 

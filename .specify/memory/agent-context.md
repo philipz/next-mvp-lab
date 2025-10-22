@@ -1,4 +1,4 @@
-# Vue-Nuxt Development Guidelines
+# Next Development Guidelines
 
 Auto-generated from all feature plans. Last updated: 2025-10-11
 
@@ -32,7 +32,7 @@ Auto-generated from all feature plans. Last updated: 2025-10-11
 ## Project Structure
 
 ```
-/workspaces/vue-nuxt/
+/workspaces/front-next/
 ├── apps/web/                    # Next.js application
 │   ├── app/                     # App Router pages
 │   │   ├── layout.tsx           # Root layout with providers
