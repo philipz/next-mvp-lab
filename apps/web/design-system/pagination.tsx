@@ -40,7 +40,8 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
             onClick={handleFirst}
             disabled={isFirstPage}
             aria-disabled={isFirstPage}
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600 transition-colors"
+            aria-label={`Go to first page`}
+            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600 transition-colors"
           >
             First
           </button>
@@ -50,13 +51,14 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
             onClick={handlePrevious}
             disabled={isFirstPage}
             aria-disabled={isFirstPage}
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600 transition-colors"
+            aria-label={`Go to previous page (page ${currentPage - 1})`}
+            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600 transition-colors"
           >
             Previous
           </button>
         </li>
         <li>
-          <span className="px-4 py-2 text-sm font-medium text-gray-700">
+          <span className="px-4 py-2 text-sm font-medium text-gray-700" aria-current="page">
             Page {currentPage} of {totalPages}
           </span>
         </li>
@@ -65,7 +67,8 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
             onClick={handleNext}
             disabled={isLastPage}
             aria-disabled={isLastPage}
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600 transition-colors"
+            aria-label={`Go to next page (page ${currentPage + 1})`}
+            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600 transition-colors"
           >
             Next
           </button>
@@ -75,7 +78,8 @@ export function Pagination({ currentPage, totalPages, onPageChange }: Pagination
             onClick={handleLast}
             disabled={isLastPage}
             aria-disabled={isLastPage}
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600 transition-colors"
+            aria-label={`Go to last page (page ${totalPages})`}
+            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600 transition-colors"
           >
             Last
           </button>

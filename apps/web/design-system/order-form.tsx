@@ -2,9 +2,6 @@
 
 import { useState } from 'react'
 import { z } from 'zod'
-import { components } from '@/lib/types/openapi'
-
-type OrderFormData = components['schemas']['OrderFormData']
 
 // Zod validation schema
 const orderFormSchema = z.object({
@@ -15,6 +12,8 @@ const orderFormSchema = z.object({
   }),
   deliveryAddress: z.string().min(1, 'Delivery address is required'),
 })
+
+export type OrderFormData = z.infer<typeof orderFormSchema>
 
 export interface OrderFormProps {
   onSubmit: (data: OrderFormData) => Promise<void>

@@ -18,7 +18,7 @@ export default function BooksPage() {
 
   const handleBuy = async (code: string) => {
     try {
-      await addToCart.mutateAsync(code)
+      await addToCart.mutateAsync({ code, quantity: 1 })
       // Redirect to cart page on success
       router.push('/cart')
     } catch (err) {
@@ -38,7 +38,7 @@ export default function BooksPage() {
     return (
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">Books</h1>
-        <ProductGrid books={[]} onBuy={handleBuy} loading={true} />
+        <ProductGrid products={[]} onBuy={handleBuy} loading />
       </div>
     )
   }
@@ -62,8 +62,10 @@ export default function BooksPage() {
     )
   }
 
-  // Empty state
-  if (!data || data.data.length === 0) {
+  const products = data?.data ?? []
+  const totalPages = data?.totalPages ?? 0
+
+  if (products.length === 0) {
     return (
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6">Books</h1>
@@ -74,22 +76,16 @@ export default function BooksPage() {
     )
   }
 
-  const { data: books, pagination } = data
-
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Books</h1>
 
-      <ProductGrid
-        books={books}
-        onBuy={handleBuy}
-        loading={addToCart.isPending}
-      />
+      <ProductGrid products={products} onBuy={handleBuy} loading={addToCart.isPending} />
 
-      {pagination.totalPages > 1 && (
+      {totalPages > 1 && (
         <Pagination
-          currentPage={pagination.page}
-          totalPages={pagination.totalPages}
+          currentPage={currentPage}
+          totalPages={totalPages}
           onPageChange={handlePageChange}
         />
       )}

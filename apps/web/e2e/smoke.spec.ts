@@ -1,7 +1,12 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures'
 
-test('home link to customers', async ({ page }) => {
-  await page.goto('/');
-  await page.getByRole('link', { name: 'Go to Customers' }).click();
-  await expect(page.locator('text=Run pnpm gen:page')).toBeVisible();
-});
+const baseURL = process.env.E2E_BASE_URL ?? 'http://localhost:3000'
+
+test.describe('Smoke', () => {
+  test('books page renders successfully', async ({ page }) => {
+    await page.goto(`${baseURL}/books`, { waitUntil: 'load' })
+    await expect(page.locator('h1')).toContainText(/Books/i)
+
+    await expect(page.getByTestId('product-card').first()).toBeVisible()
+  })
+})

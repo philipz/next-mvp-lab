@@ -18,12 +18,12 @@ const code = `/* generated from ${specPath} */
 "use client";
 import { DataTable } from "@/design-system/data-table";
 import { useQuery } from "@tanstack/react-query";
-import { client } from "@/lib/http";
+import { apiClient } from "@/lib/api/client";
 
 export default function ${pageName}(){
   const { data, isLoading } = useQuery({
     queryKey: ${JSON.stringify(spec.data?.queryKey || ["generated"]) as string},
-    queryFn: () => client.GET("${spec.data?.source?.split(" ").slice(-1)[0] ?? "/api/_"}").then(r=>r.data)
+    queryFn: async () => apiClient.get("${spec.data?.source?.split(" ").slice(-1)[0] ?? "/api/_"}")
   });
   return (
     <main className="p-6">

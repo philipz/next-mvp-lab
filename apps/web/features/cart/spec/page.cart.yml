@@ -1,0 +1,21 @@
+page: Cart
+route: /cart
+layout:
+  title: Shopping Cart
+  actions: []
+data:
+  source: GET /api/cart
+  queryKey: ["cart", "current"]
+  updates:
+    - mutationKey: ["cart", "update"]
+      endpoint: POST /api/cart/update
+view:
+  type: custom
+  components:
+    - CartTable
+    - OrderForm
+requirements:
+  accessibility: "Form labels, error messages, keyboard navigation"
+  lighthouse:
+    performance: ">=90"
+    accessibility: ">=100"
