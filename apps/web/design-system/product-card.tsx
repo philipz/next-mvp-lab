@@ -7,7 +7,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, onBuy }: ProductCardProps) {
-  const displayImage = product.imageUrl ?? '/images/books.png'
+  const displayImage = product.imageUrl ?? '/images/products.png'
 
   return (
     <article
